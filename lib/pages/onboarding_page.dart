@@ -69,9 +69,57 @@ class OnboardingPage extends StatelessWidget {
             icon: Icon(Icons.music_note, color: Colors.black)),
       ),
       body: Container(
+        alignment: Alignment.center,
         color: Colors.blue,
-        child: const Center(
-          child: Text('Onboarding Page'),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Container(
+                color: Colors.red,
+                child: Column(
+                  children: [
+                    Text(
+                      'Symphonear',
+                      style: TextStyle(fontSize: 32),
+                    ),
+                    Text(
+                      'Music in web3 with NEAR',
+                      style: TextStyle(fontSize: 32),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      'Experience decentralized music.\nA service thought for Artists and users in web3',
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        enabledMouseCursor: SystemMouseCursors.click,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        'Connect your wallet',
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: Colors.deepOrange,
+                child: Text('Onboarding Page'),
+              ),
+            ),
+          ],
         ),
       ),
     );

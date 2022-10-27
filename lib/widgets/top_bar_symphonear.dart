@@ -88,7 +88,13 @@ class _TopBarSymphonearState extends State<TopBarSymphonear> {
                                 value;
                           });
                         },
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => appBarButton.route,
+                            ),
+                          );
+                        },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: Column(

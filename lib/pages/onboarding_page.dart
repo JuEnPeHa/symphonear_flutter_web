@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:symphonear_flutter_web/pages/library_page.dart';
 import 'package:symphonear_flutter_web/utils/neumorphism.dart';
 import 'package:symphonear_flutter_web/widgets/onboarding/onboarding_heading.dart';
 import 'package:symphonear_flutter_web/widgets/onboarding/symphonear_onboard_text_with_connect_wallet.dart';
@@ -27,7 +28,7 @@ final List<AppBarButton> appBarButtons = [
   AppBarButton(
     title: 'My Library',
     // icon: Icons.music_note,
-    route: Container(),
+    route: MyLibraryPage(),
   ),
   AppBarButton(
     title: 'Roadmap',

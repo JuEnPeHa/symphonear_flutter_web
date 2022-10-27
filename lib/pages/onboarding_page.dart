@@ -64,7 +64,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         : 1;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: true
+      appBar: false
           ? AppBar(
               backgroundColor: Colors.grey.shade300.withOpacity(_opacity),
             )

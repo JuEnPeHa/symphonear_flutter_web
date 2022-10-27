@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:symphonear_flutter_web/utils/neumorphism.dart';
 import 'package:symphonear_flutter_web/widgets/onboarding/onboarding_heading.dart';
+import 'package:symphonear_flutter_web/widgets/onboarding/symphonear_onboard_text_with_connect_wallet.dart';
 import 'package:symphonear_flutter_web/widgets/responsive_widget.dart';
 import 'package:symphonear_flutter_web/widgets/symphonear_drawer.dart';
 import 'package:symphonear_flutter_web/widgets/top_bar_symphonear.dart';
@@ -89,7 +90,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         : 1;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      drawer: SymphonearDrawer(),
+      drawer: const SymphonearDrawer(),
       appBar: ResponsiveWidget.isSmallScreen(context)
           ? AppBar(
               iconTheme: IconThemeData(color: Colors.black),
@@ -124,6 +125,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ),
             ),
       body: WebScrollBarSymphonear(
+        isAlwaysShown: true,
         color: Colors.blueGrey,
         backgroundColor: Colors.blueGrey.withOpacity(0.3),
         width: 10,
@@ -133,6 +135,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
           physics: ClampingScrollPhysics(),
           child: Column(
             children: [
+              MiniMultipleAnimatedPreviews(
+                screenSize: screenSize,
+              ),
               Row(
                 children: [
                   Expanded(
@@ -211,53 +216,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 }
 
-class SymphonearOnboardTextWithConnectWallet extends StatelessWidget {
-  final Size screenSize;
-  const SymphonearOnboardTextWithConnectWallet({
-    super.key,
-    required this.screenSize,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          OnboardingHeadingSymphonear(screenSize: screenSize),
-          SizedBox(
-            height: screenSize.height * 0.025,
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(
-                horizontal: 25,
-                vertical: 25,
-              ),
-              enabledMouseCursor: SystemMouseCursors.click,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(35.0),
-              ),
-              backgroundColor: Colors.grey.shade500,
-            ),
-            onPressed: () {},
-            child: Text(
-              'Connect your wallet',
-              style: TextStyle(
-                fontSize: AdaptiveTextSize().getadaptiveTextSize(context, 16),
-                color: Colors.black,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
 class AppBarButton {
   final String title;
   final Widget route;
@@ -266,6 +224,138 @@ class AppBarButton {
     required this.title,
     required this.route,
   });
+}
+
+class MiniMultipleAnimatedPreviews extends StatefulWidget {
+  final Size screenSize;
+  const MiniMultipleAnimatedPreviews({
+    super.key,
+    required this.screenSize,
+  });
+
+  @override
+  State<MiniMultipleAnimatedPreviews> createState() =>
+      _MiniMultipleAnimatedPreviewsState();
+}
+
+class _MiniMultipleAnimatedPreviewsState
+    extends State<MiniMultipleAnimatedPreviews>
+    with SingleTickerProviderStateMixin {
+//This will be a 3D carousel with 3 mini previews
+//From left to right
+//1. Music Reproductor
+//2. Music Reproductor
+//3. Music Reproductor
+
+  late final AnimationController _animationController;
+  late final Animation<double> _animation;
+  late final Animation<double> _animation2;
+  late final Animation<double> _animation3;
+
+  void _changePosition() {
+    _animationController.forward(from: 0.0);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 15),
+    );
+    _animation = Tween<double>(begin: 0, end: 0.33).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+    _animation2 = Tween<double>(begin: 0.33, end: 0.66).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+    _animation3 = Tween<double>(begin: 0.66, end: 1).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+    _animationController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveWidget.isSmallScreen(context)
+        ? ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: widget.screenSize.width,
+              maxWidth: widget.screenSize.width,
+              minHeight: widget.screenSize.width * 2.5,
+              maxHeight: widget.screenSize.width * 2.5,
+            ),
+            child: Container(
+              color: Colors.blue.shade300,
+              child: Stack(
+                children: [
+                  AnimatedBuilder(
+                    animation: _animation,
+                    builder: (context, child) {
+                      return Transform.translate(
+                        offset: Offset(
+                          _animation.value * widget.screenSize.width,
+                          _animation.value * (widget.screenSize.width / 3),
+                        ),
+                        child: child,
+                      );
+                    },
+                    child: MiniPreviewMusicReproductor(),
+                  ),
+                  AnimatedBuilder(
+                    animation: _animation2,
+                    builder: (context, child) {
+                      return Transform.translate(
+                        offset: Offset(
+                          _animation2.value * widget.screenSize.width,
+                          _animation2.value * (widget.screenSize.width / 3 * 2),
+                        ),
+                        child: child,
+                      );
+                    },
+                    child: MiniPreviewMusicReproductor(),
+                  ),
+                  AnimatedBuilder(
+                    animation: _animation3,
+                    builder: (context, child) {
+                      return Transform.translate(
+                        offset: Offset(
+                          _animation3.value * widget.screenSize.width,
+                          0,
+                        ),
+                        child: child,
+                      );
+                    },
+                    child: MiniPreviewMusicReproductor(),
+                  ),
+                ],
+              ),
+            ),
+          )
+        : ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: widget.screenSize.width * 0.25,
+              maxWidth: widget.screenSize.width * 0.40,
+              minHeight: widget.screenSize.width * 0.75,
+              maxHeight: widget.screenSize.width * 1.20,
+            ),
+          );
+  }
 }
 
 class MiniPreviewMusicReproductor extends StatelessWidget {

@@ -4,6 +4,7 @@ import 'package:symphonear_flutter_web/utils/neumorphism.dart';
 import 'package:symphonear_flutter_web/widgets/responsive_widget.dart';
 import 'package:symphonear_flutter_web/widgets/symphonear_drawer.dart';
 import 'package:symphonear_flutter_web/widgets/top_bar_symphonear.dart';
+import 'package:symphonear_flutter_web/widgets/web_scrollbar.dart';
 
 final List<AppBarButton> appBarButtons = [
   AppBarButton(
@@ -120,90 +121,148 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 1000,
               ),
             ),
-      body: Container(
-        alignment: Alignment.center,
-        color: Colors.blue,
-        child: Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                color: Colors.red,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Symphonear',
-                      style: TextStyle(
-                        fontSize:
-                            AdaptiveTextSize().getadaptiveTextSize(context, 32),
-                      ),
-                    ),
-                    Text(
-                      'Music in web3 with NEAR',
-                      style: TextStyle(
-                        fontSize:
-                            AdaptiveTextSize().getadaptiveTextSize(context, 32),
-                      ),
-                    ),
-                    SizedBox(
-                      height:
-                          AdaptiveTextSize().getadaptiveTextSize(context, 32),
-                    ),
-                    Text(
-                      'Experience decentralized music.\nA service thought for Artists and users in web3',
-                      style: TextStyle(
-                          fontSize: AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 16)),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height:
-                          AdaptiveTextSize().getadaptiveTextSize(context, 32),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 25,
-                          vertical: 25,
-                        ),
-                        enabledMouseCursor: SystemMouseCursors.click,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(35.0),
-                        ),
-                        backgroundColor: Colors.grey.shade500,
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        'Connect your wallet',
-                        style: TextStyle(
-                          fontSize: AdaptiveTextSize()
-                              .getadaptiveTextSize(context, 16),
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  color: Colors.white12,
-                  child: MiniPreviewMusicReproductor().neumorphism(
-                    blurRadius: 2.5,
-                    spreadRadius: 2.5,
+      body: WebScrollBarSymphonear(
+        color: Colors.blueGrey,
+        backgroundColor: Colors.blueGrey.withOpacity(0.3),
+        width: 10,
+        heightFraction: 0.3,
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          physics: ClampingScrollPhysics(),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: SymphonearOnboardTextWithConnectWallet(),
                   ),
-                ),
+                  Expanded(
+                    flex: 1,
+                    child: Center(
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        color: Colors.white12,
+                        child: MiniPreviewMusicReproductor().neumorphism(
+                          blurRadius: 2.5,
+                          spreadRadius: 2.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: SymphonearOnboardTextWithConnectWallet(),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Center(
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        color: Colors.white12,
+                        child: MiniPreviewMusicReproductor().neumorphism(
+                          blurRadius: 2.5,
+                          spreadRadius: 2.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: SymphonearOnboardTextWithConnectWallet(),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Center(
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        color: Colors.white12,
+                        child: MiniPreviewMusicReproductor().neumorphism(
+                          blurRadius: 2.5,
+                          spreadRadius: 2.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
+        scrollController: _scrollController,
+      ),
+    );
+  }
+}
+
+class SymphonearOnboardTextWithConnectWallet extends StatelessWidget {
+  const SymphonearOnboardTextWithConnectWallet({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Symphonear',
+            style: TextStyle(
+              fontSize: AdaptiveTextSize().getadaptiveTextSize(context, 32),
+            ),
+          ),
+          Text(
+            'Music in web3 with NEAR',
+            style: TextStyle(
+              fontSize: AdaptiveTextSize().getadaptiveTextSize(context, 32),
+            ),
+          ),
+          SizedBox(
+            height: AdaptiveTextSize().getadaptiveTextSize(context, 32),
+          ),
+          Text(
+            'Experience decentralized music.\nA service thought for Artists and users in web3',
+            style: TextStyle(
+                fontSize: AdaptiveTextSize().getadaptiveTextSize(context, 16)),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: AdaptiveTextSize().getadaptiveTextSize(context, 32),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(
+                horizontal: 25,
+                vertical: 25,
+              ),
+              enabledMouseCursor: SystemMouseCursors.click,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(35.0),
+              ),
+              backgroundColor: Colors.grey.shade500,
+            ),
+            onPressed: () {},
+            child: Text(
+              'Connect your wallet',
+              style: TextStyle(
+                fontSize: AdaptiveTextSize().getadaptiveTextSize(context, 16),
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          )
+        ],
       ),
     );
   }

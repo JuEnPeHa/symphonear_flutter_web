@@ -14,7 +14,7 @@ class SymphonearOnboardTextWithConnectWallet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
-      color: Colors.red.shade300,
+      // color: Colors.red.shade300,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,

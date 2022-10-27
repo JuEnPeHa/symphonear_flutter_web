@@ -88,6 +88,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
     _opacity = _scrollPosition < screenSize.height * 0.40
         ? _scrollPosition / (screenSize.height * 0.40)
         : 1;
+    //Negate the opacity of the top bar
+    _opacity = 1 - _opacity;
+    print('opacity: $_opacity');
     return Scaffold(
       extendBodyBehindAppBar: true,
       drawer: const SymphonearDrawer(),
@@ -135,9 +138,33 @@ class _OnboardingPageState extends State<OnboardingPage> {
           physics: ClampingScrollPhysics(),
           child: Column(
             children: [
-              MiniMultipleAnimatedPreviews(
-                screenSize: screenSize,
+              SizedBox(
+                height: _opacity * 100,
               ),
+              ResponsiveWidget.isSmallScreen(context)
+                  ? Column(
+                      children: [
+                        SymphonearOnboardTextWithConnectWallet(
+                          screenSize: screenSize,
+                        ),
+                        MiniMultipleAnimatedPreviews(screenSize: screenSize),
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        Expanded(
+                          flex: 8,
+                          child: SymphonearOnboardTextWithConnectWallet(
+                            screenSize: screenSize,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 6,
+                          child: MiniMultipleAnimatedPreviews(
+                              screenSize: screenSize),
+                        ),
+                      ],
+                    ),
               Row(
                 children: [
                   Expanded(
@@ -152,7 +179,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       child: Container(
                         padding: EdgeInsets.all(16),
                         color: Colors.white12,
-                        child: MiniPreviewMusicReproductor().neumorphism(
+                        child:
+                            MiniPreviewMusicReproductor(screenSize: screenSize)
+                                .neumorphism(
                           blurRadius: 2.5,
                           spreadRadius: 2.5,
                         ),
@@ -175,30 +204,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       child: Container(
                         padding: EdgeInsets.all(16),
                         color: Colors.white12,
-                        child: MiniPreviewMusicReproductor().neumorphism(
-                          blurRadius: 2.5,
-                          spreadRadius: 2.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: SymphonearOnboardTextWithConnectWallet(
-                      screenSize: screenSize,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Center(
-                      child: Container(
-                        padding: EdgeInsets.all(16),
-                        color: Colors.white12,
-                        child: MiniPreviewMusicReproductor().neumorphism(
+                        child:
+                            MiniPreviewMusicReproductor(screenSize: screenSize)
+                                .neumorphism(
                           blurRadius: 2.5,
                           spreadRadius: 2.5,
                         ),
@@ -261,7 +269,7 @@ class _MiniMultipleAnimatedPreviewsState
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 15),
+      duration: const Duration(seconds: 30),
     );
     _animation = Tween<double>(begin: 0, end: 0.33).animate(
       CurvedAnimation(
@@ -275,7 +283,7 @@ class _MiniMultipleAnimatedPreviewsState
         curve: Curves.easeInOut,
       ),
     );
-    _animation3 = Tween<double>(begin: 0.66, end: 1).animate(
+    _animation3 = Tween<double>(begin: 0.33, end: 0).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Curves.easeInOut,
@@ -292,83 +300,165 @@ class _MiniMultipleAnimatedPreviewsState
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveWidget.isSmallScreen(context)
-        ? ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: widget.screenSize.width,
-              maxWidth: widget.screenSize.width,
-              minHeight: widget.screenSize.width,
-              maxHeight: widget.screenSize.width,
-            ),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 64,
-                vertical: 16,
+    return AnimatedSwitcher(
+      duration: const Duration(seconds: 1),
+      child: ResponsiveWidget.isSmallScreen(context)
+          ? ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: widget.screenSize.width,
+                maxWidth: widget.screenSize.width,
+                minHeight: widget.screenSize.width * 0.80,
+                maxHeight: widget.screenSize.width * 0.80,
               ),
-              color: Colors.blue.shade300,
-              child: Stack(
-                children: [
-                  AnimatedBuilder(
-                    animation: _animation,
-                    builder: (context, child) {
-                      return Transform.translate(
-                        offset: Offset(
-                          _animation.value * widget.screenSize.width,
-                          _animation.value * (widget.screenSize.width / 3),
-                        ),
-                        child: child,
-                      );
-                    },
-                    child: MiniPreviewMusicReproductor(),
-                  ),
-                  AnimatedBuilder(
-                    animation: _animation2,
-                    builder: (context, child) {
-                      return Transform.translate(
-                        offset: Offset(
-                          _animation2.value * widget.screenSize.width,
-                          _animation2.value * (widget.screenSize.width / 3 * 2),
-                        ),
-                        child: child,
-                      );
-                    },
-                    child: MiniPreviewMusicReproductor(),
-                  ),
-                  AnimatedBuilder(
-                    animation: _animation3,
-                    builder: (context, child) {
-                      return Transform.translate(
-                        offset: Offset(
-                          _animation3.value * widget.screenSize.width,
-                          0,
-                        ),
-                        child: child,
-                      );
-                    },
-                    child: MiniPreviewMusicReproductor(),
-                  ),
-                ],
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 64,
+                  vertical: 16,
+                ),
+                // color: Colors.blue.shade300,
+                child: Stack(
+                  children: [
+                    AnimatedBuilder(
+                      animation: _animation,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(
+                            _animation.value * (widget.screenSize.width / 2),
+                            _animation.value *
+                                (widget.screenSize.width / 3 / 2),
+                          ),
+                          child: child,
+                        );
+                      },
+                      child: MiniPreviewMusicReproductor(
+                        screenSize: widget.screenSize,
+                      ),
+                    ),
+                    AnimatedBuilder(
+                      animation: _animation2,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(
+                            _animation2.value * (widget.screenSize.width / 2),
+                            _animation2.value *
+                                (widget.screenSize.width / 3 * 2 / 2),
+                          ),
+                          child: child,
+                        );
+                      },
+                      child: MiniPreviewMusicReproductor(
+                        screenSize: widget.screenSize,
+                      ),
+                    ),
+                    AnimatedBuilder(
+                      animation: _animation3,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(
+                            (_animation2.value * 2) /
+                                4 *
+                                3 *
+                                (widget.screenSize.width * 0.50),
+                            _animation3.value *
+                                (widget.screenSize.width / 3 / 2),
+                          ),
+                          child: child,
+                        );
+                      },
+                      child: MiniPreviewMusicReproductor(
+                        screenSize: widget.screenSize,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: widget.screenSize.width * 0.40,
+                maxWidth: widget.screenSize.width * 0.50,
+                minHeight: widget.screenSize.width * 0.40,
+                maxHeight: widget.screenSize.width * 1.00,
+              ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 16,
+                ),
+                // color: Colors.blue.shade300,
+                child: Stack(
+                  children: [
+                    AnimatedBuilder(
+                      animation: _animation,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(
+                            _animation.value *
+                                (widget.screenSize.width / 2 / 4),
+                            _animation.value *
+                                (widget.screenSize.width / 3 / 2 / 4),
+                          ),
+                          child: child,
+                        );
+                      },
+                      child: MiniPreviewMusicReproductor(
+                        screenSize: widget.screenSize,
+                      ),
+                    ),
+                    AnimatedBuilder(
+                      animation: _animation2,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(
+                            _animation2.value *
+                                (widget.screenSize.width / 2 / 4),
+                            _animation2.value *
+                                (widget.screenSize.width / 3 * 2 / 2 / 4),
+                          ),
+                          child: child,
+                        );
+                      },
+                      child: MiniPreviewMusicReproductor(
+                        screenSize: widget.screenSize,
+                      ),
+                    ),
+                    AnimatedBuilder(
+                      animation: _animation3,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(
+                            (_animation2.value * 2) /
+                                4 *
+                                3 *
+                                (widget.screenSize.width * 0.50 / 4),
+                            _animation3.value *
+                                (widget.screenSize.width / 3 / 2 / 4),
+                          ),
+                          child: child,
+                        );
+                      },
+                      child: MiniPreviewMusicReproductor(
+                        screenSize: widget.screenSize,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          )
-        : ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: widget.screenSize.width * 0.25,
-              maxWidth: widget.screenSize.width * 0.40,
-              minHeight: widget.screenSize.width * 0.75,
-              maxHeight: widget.screenSize.width * 1.20,
-            ),
-          );
+    );
   }
 }
 
 class MiniPreviewMusicReproductor extends StatelessWidget {
-  const MiniPreviewMusicReproductor({super.key});
+  final Size screenSize;
+  const MiniPreviewMusicReproductor({
+    super.key,
+    required this.screenSize,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
-    final _width = _size.width * 0.2;
+    final _width = screenSize.width * 0.2;
     return Container(
       decoration: BoxDecoration(
         color: Colors.white70,
@@ -379,20 +469,18 @@ class MiniPreviewMusicReproductor extends StatelessWidget {
       height: _width * 2.0,
       child: Column(
         children: [
-          Expanded(
-            flex: 3,
+          const Expanded(
+            flex: 11,
             child: Placeholder(),
           ),
           Expanded(
-            flex: 2,
+            flex: 8,
             child: Column(
               children: [
                 Text("Otra noche en Miami"),
-                //SizedBox(height: 4),
                 CustomSymphonearSlider(
                   onChanged: (value) {},
                 ),
-                // SizedBox(height: 4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -402,7 +490,7 @@ class MiniPreviewMusicReproductor extends StatelessWidget {
                       child: IconButton(
                         iconSize: _width * 0.115,
                         onPressed: () {},
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.skip_previous,
                           color: Colors.black,
                         ),
@@ -415,7 +503,7 @@ class MiniPreviewMusicReproductor extends StatelessWidget {
                         child: IconButton(
                           iconSize: _width * 0.115,
                           onPressed: () {},
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.play_arrow,
                             color: Colors.white,
                           ),
@@ -428,7 +516,7 @@ class MiniPreviewMusicReproductor extends StatelessWidget {
                       child: IconButton(
                         iconSize: _width * 0.115,
                         onPressed: () {},
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.skip_next,
                           color: Colors.black,
                         ),
@@ -436,23 +524,22 @@ class MiniPreviewMusicReproductor extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 4),
                 //Two more buttons in a Row (repeat and shuffle)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                      iconSize: _width * 0.125,
+                      iconSize: _width * 0.115,
                       onPressed: () {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.repeat,
                         color: Colors.black,
                       ),
                     ),
                     IconButton(
-                      iconSize: _width * 0.125,
+                      iconSize: _width * 0.115,
                       onPressed: () {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.shuffle,
                         color: Colors.black,
                       ),

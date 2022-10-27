@@ -92,6 +92,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       drawer: SymphonearDrawer(),
       appBar: ResponsiveWidget.isSmallScreen(context)
           ? AppBar(
+              iconTheme: IconThemeData(color: Colors.black),
               backgroundColor: Colors.grey.shade300.withOpacity(_opacity),
               elevation: 0,
               centerTitle: true,
@@ -227,16 +228,7 @@ class SymphonearOnboardTextWithConnectWallet extends StatelessWidget {
         children: [
           OnboardingHeadingSymphonear(screenSize: screenSize),
           SizedBox(
-            height: AdaptiveTextSize().getadaptiveTextSize(context, 32),
-          ),
-          Text(
-            'Experience decentralized music.\nA service thought for Artists and users in web3',
-            style: TextStyle(
-                fontSize: AdaptiveTextSize().getadaptiveTextSize(context, 16)),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: AdaptiveTextSize().getadaptiveTextSize(context, 32),
+            height: screenSize.height * 0.025,
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(

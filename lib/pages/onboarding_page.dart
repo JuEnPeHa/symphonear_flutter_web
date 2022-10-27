@@ -297,10 +297,14 @@ class _MiniMultipleAnimatedPreviewsState
             constraints: BoxConstraints(
               minWidth: widget.screenSize.width,
               maxWidth: widget.screenSize.width,
-              minHeight: widget.screenSize.width * 2.5,
-              maxHeight: widget.screenSize.width * 2.5,
+              minHeight: widget.screenSize.width,
+              maxHeight: widget.screenSize.width,
             ),
             child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 64,
+                vertical: 16,
+              ),
               color: Colors.blue.shade300,
               child: Stack(
                 children: [

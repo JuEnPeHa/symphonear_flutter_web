@@ -20,74 +20,61 @@ final List<AppBarButton> appBarButtons = [
   ),
 ];
 
-class OnboardingPage extends StatelessWidget {
+class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
 
   @override
+  State<OnboardingPage> createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage> {
+  late final ScrollController _scrollController;
+  double _scrollPosition = 0.0;
+  double _opacity = 0.0;
+
+  _scrollListener() {
+    setState(() {
+      // _opacity = _scrollController.offset / 100;
+      _scrollPosition = _scrollController.position.pixels;
+    });
+  }
+
+  final List<bool> _isHovering =
+      List.generate(appBarButtons.length, (index) => false);
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    _opacity = _scrollPosition < screenSize.height * 0.40
+        ? _scrollPosition / (screenSize.height * 0.40)
+        : 1;
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(AdaptiveTextSize().getadaptiveTextSize(
-          context,
-          50,
-        )),
-        child: AppBar(
-          backgroundColor: Colors.grey.shade300,
-          title: Row(
-            children: const [
-              Icon(Icons.av_timer, color: Colors.black),
-              SizedBox(width: 4),
-              Text('0D 0H 00:00', style: TextStyle(color: Colors.black)),
-              SizedBox(width: 16),
-              Icon(Icons.monetization_on, color: Colors.black),
-              SizedBox(width: 4),
-              Text('0 USDC', style: TextStyle(color: Colors.black)),
-              Spacer(),
-            ],
-          ),
-          titleSpacing: 0.0,
-          centerTitle: true,
-          toolbarHeight: AdaptiveTextSize().getadaptiveTextSize(
-            context,
-            100,
-          ),
-          actions: [
-            for (final AppBarButton appBarButton in appBarButtons)
-              Container(
-                color: Colors.brown,
-                child: CupertinoButton(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AdaptiveTextSize().getadaptiveTextSize(
-                      context,
-                      16,
-                    ),
-                  ),
-                  child: Text(
-                    appBarButton.title,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize:
-                          AdaptiveTextSize().getadaptiveTextSize(context, 14),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => appBarButton.route,
-                      ),
-                    );
-                  },
-                ),
+      extendBodyBehindAppBar: true,
+      appBar: true
+          ? AppBar(
+              backgroundColor: Colors.grey.shade300.withOpacity(_opacity),
+            )
+          : PreferredSize(
+              child: TopBarSymphonear(),
+              preferredSize: Size(
+                screenSize.width,
+                1000,
               ),
-          ],
-          leading: IconButton(
-              onPressed: () {
-                print("Onboarding Page");
-              },
-              icon: Icon(Icons.music_note, color: Colors.black)),
-        ),
-      ),
+            ),
       body: Container(
         alignment: Alignment.center,
         color: Colors.blue,
@@ -350,5 +337,185 @@ class AdaptiveTextSize {
   getadaptiveTextSize(BuildContext context, dynamic value) {
     // 720 is medium screen height
     return (value / 360) * MediaQuery.of(context).size.height;
+  }
+}
+
+class TopBarSymphonear extends StatefulWidget {
+  const TopBarSymphonear({super.key});
+
+  @override
+  State<TopBarSymphonear> createState() => _TopBarSymphonearState();
+}
+
+class _TopBarSymphonearState extends State<TopBarSymphonear> {
+  final List<bool> _isHovering =
+      List.generate(appBarButtons.length, (index) => false);
+  @override
+  Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    return PreferredSize(
+      preferredSize: Size(screenSize.width, 1000),
+      child: Container(
+        color: Colors.grey.shade300,
+        child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {},
+                  child: Text('Symphonear',
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.av_timer, color: Colors.black),
+                      SizedBox(width: 4),
+                      Text('0D 0H 00:00',
+                          style: TextStyle(color: Colors.black)),
+                      SizedBox(width: 16),
+                      Icon(Icons.monetization_on, color: Colors.black),
+                      SizedBox(width: 4),
+                      Text('0 USDC', style: TextStyle(color: Colors.black)),
+                      Spacer(),
+                    ],
+                  ),
+                ),
+                // Row(
+                //   children: appBarButtons
+                //       .map((e) => Padding(
+                //             padding: const EdgeInsets.all(8.0),
+                //             child: InkWell(
+                //               onTap: () {},
+                //               child: Text(e.title,
+                //                   style: TextStyle(
+                //                       fontSize: 20,
+                //                       fontWeight: FontWeight.bold)),
+                //             ),
+                //           ))
+                //       .toList(),
+                // ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: appBarButtons.map((AppBarButton appBarButton) {
+                      return InkWell(
+                        onHover: (value) {
+                          setState(() {
+                            _isHovering[appBarButtons.indexOf(appBarButton)] =
+                                value;
+                          });
+                        },
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                appBarButton.title,
+                                style: TextStyle(
+                                  color: _isHovering[
+                                          appBarButtons.indexOf(appBarButton)]
+                                      ? Colors.grey
+                                      : Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              // if (_isHovering[
+                              //     appBarButtons.indexOf(appBarButton)])
+                              //   Container(
+                              //     height: 2,
+                              //     width: 20,
+                              //     color: Colors.black,
+                              //   ),
+                              Visibility(
+                                maintainAnimation: true,
+                                maintainState: true,
+                                maintainSize: true,
+                                visible: _isHovering[
+                                    appBarButtons.indexOf(appBarButton)],
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  height: 2,
+                                  width: 20,
+                                  // color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            )),
+      ),
+      // child: AppBar(
+      //   backgroundColor: Colors.grey.shade300,
+      //   title: Row(
+      //     children: const [
+      //       Icon(Icons.av_timer, color: Colors.black),
+      //       SizedBox(width: 4),
+      //       Text('0D 0H 00:00', style: TextStyle(color: Colors.black)),
+      //       SizedBox(width: 16),
+      //       Icon(Icons.monetization_on, color: Colors.black),
+      //       SizedBox(width: 4),
+      //       Text('0 USDC', style: TextStyle(color: Colors.black)),
+      //       Spacer(),
+      //     ],
+      //   ),
+      //   titleSpacing: 0.0,
+      //   centerTitle: true,
+      //   toolbarHeight: AdaptiveTextSize().getadaptiveTextSize(
+      //     context,
+      //     100,
+      //   ),
+      //   actions: [
+      //     for (final AppBarButton appBarButton in appBarButtons)
+      //       Container(
+      //         color: Colors.brown,
+      //         child: CupertinoButton(
+      //           padding: EdgeInsets.symmetric(
+      //             horizontal: AdaptiveTextSize().getadaptiveTextSize(
+      //               context,
+      //               16,
+      //             ),
+      //           ),
+      //           child: Text(
+      //             appBarButton.title,
+      //             style: TextStyle(
+      //               color: Colors.black,
+      //               fontSize:
+      //                   AdaptiveTextSize().getadaptiveTextSize(context, 14),
+      //             ),
+      //           ),
+      //           onPressed: () {
+      //             Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                 builder: (BuildContext context) => appBarButton.route,
+      //               ),
+      //             );
+      //           },
+      //         ),
+      //       ),
+      //   ],
+      //   leading: IconButton(
+      //       onPressed: () {
+      //         print("Onboarding Page");
+      //       },
+      //       icon: Icon(Icons.music_note, color: Colors.black)),
+      // ),
+    );
   }
 }

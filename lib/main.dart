@@ -19,7 +19,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: title,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        //primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const MyHomePage(title: title),
     );

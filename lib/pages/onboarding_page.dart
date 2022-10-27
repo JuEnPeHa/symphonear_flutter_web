@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:symphonear_flutter_web/utils/neumorphism.dart';
+import 'package:symphonear_flutter_web/widgets/onboarding/onboarding_heading.dart';
 import 'package:symphonear_flutter_web/widgets/responsive_widget.dart';
 import 'package:symphonear_flutter_web/widgets/symphonear_drawer.dart';
 import 'package:symphonear_flutter_web/widgets/top_bar_symphonear.dart';
@@ -135,7 +136,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: SymphonearOnboardTextWithConnectWallet(),
+                    child: SymphonearOnboardTextWithConnectWallet(
+                      screenSize: screenSize,
+                    ),
                   ),
                   Expanded(
                     flex: 1,
@@ -156,7 +159,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: SymphonearOnboardTextWithConnectWallet(),
+                    child: SymphonearOnboardTextWithConnectWallet(
+                      screenSize: screenSize,
+                    ),
                   ),
                   Expanded(
                     flex: 1,
@@ -177,7 +182,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: SymphonearOnboardTextWithConnectWallet(),
+                    child: SymphonearOnboardTextWithConnectWallet(
+                      screenSize: screenSize,
+                    ),
                   ),
                   Expanded(
                     flex: 1,
@@ -204,8 +211,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
 }
 
 class SymphonearOnboardTextWithConnectWallet extends StatelessWidget {
+  final Size screenSize;
   const SymphonearOnboardTextWithConnectWallet({
     super.key,
+    required this.screenSize,
   });
 
   @override
@@ -216,18 +225,7 @@ class SymphonearOnboardTextWithConnectWallet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'Symphonear',
-            style: TextStyle(
-              fontSize: AdaptiveTextSize().getadaptiveTextSize(context, 32),
-            ),
-          ),
-          Text(
-            'Music in web3 with NEAR',
-            style: TextStyle(
-              fontSize: AdaptiveTextSize().getadaptiveTextSize(context, 32),
-            ),
-          ),
+          OnboardingHeadingSymphonear(screenSize: screenSize),
           SizedBox(
             height: AdaptiveTextSize().getadaptiveTextSize(context, 32),
           ),

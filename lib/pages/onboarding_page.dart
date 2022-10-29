@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:symphonear_flutter_web/pages/library_page.dart';
@@ -25,7 +28,7 @@ final List<AppBarButton> appBarButtons = [
     // icon: Icons.music_note,
     route: Container(),
   ),
-  AppBarButton(
+  const AppBarButton(
     title: 'My Library',
     // icon: Icons.music_note,
     route: MyLibraryPage(),
@@ -97,11 +100,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
       drawer: const SymphonearDrawer(),
       appBar: ResponsiveWidget.isSmallScreen(context)
           ? AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: const IconThemeData(color: Colors.black),
               backgroundColor: Colors.grey.shade300.withOpacity(_opacity),
               elevation: 0,
               centerTitle: true,
-              title: Text(
+              title: const Text(
                 'Symphonear',
                 style: TextStyle(
                   color: Colors
@@ -136,7 +139,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         heightFraction: 0.3,
         child: SingleChildScrollView(
           controller: _scrollController,
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           child: Column(
             children: [
               SizedBox(
@@ -178,7 +181,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     flex: 1,
                     child: Center(
                       child: Container(
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         color: Colors.white12,
                         child:
                             MiniPreviewMusicReproductor(screenSize: screenSize)
@@ -203,7 +206,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     flex: 1,
                     child: Center(
                       child: Container(
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         color: Colors.white12,
                         child:
                             MiniPreviewMusicReproductor(screenSize: screenSize)
@@ -235,11 +238,17 @@ class AppBarButton {
   });
 }
 
+/*This widget will be a container with 3 MiniPreviewMusicReproductor
+*in a row, with an animations
+*the left and right will be animated from top to bottom and back in a loop
+*and the center will be animated from bottom to top and back in a loop
+*/
+
 class MiniMultipleAnimatedPreviews extends StatefulWidget {
   final Size screenSize;
   const MiniMultipleAnimatedPreviews({
-    super.key,
     required this.screenSize,
+    super.key,
   });
 
   @override
@@ -249,6 +258,134 @@ class MiniMultipleAnimatedPreviews extends StatefulWidget {
 
 class _MiniMultipleAnimatedPreviewsState
     extends State<MiniMultipleAnimatedPreviews>
+    with SingleTickerProviderStateMixin {
+  static const Map<String, String> _songInfo = {
+    'title': 'Song title',
+    'artist': 'Artist',
+    'album': 'Album',
+    'image': 'https://picsum.photos/200',
+  };
+  static const List<String> _songNames = [
+    'Una noche en el museo',
+    'Dance with me',
+    'The best song',
+  ];
+
+  static List<Map<String, String>> _getSongInfo() {
+    final List<Map<String, String>> songInfo = [];
+    for (int i = 0; i < _songNames.length; i++) {
+      songInfo.add({
+        'title': _songNames[i],
+        'artist': _songInfo['artist'] ?? 'Artist',
+        'album': _songInfo['album'] ?? 'Album',
+        'image': '${_songInfo['image']}?random=$i',
+      });
+    }
+    return songInfo;
+  }
+
+  final List<Map<String, String>> _songInfoList = _getSongInfo();
+
+  late final AnimationController _animationController;
+  late final Animation<Offset> _animation1;
+  late final Animation<Offset> _animation2;
+  late final Animation<Offset> _animation3;
+
+  final List<Animation<Offset>> _listOfAnimations = <Animation<Offset>>[];
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    );
+    _animationController.repeat(reverse: true);
+    _animation1 = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, 0.5),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: const Interval(
+        0,
+        0.33,
+        curve: Curves.easeInOut,
+      ),
+    ));
+    _animation2 = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, 0.5),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: const Interval(
+        0.33,
+        0.66,
+        curve: Curves.easeInOut,
+      ),
+    ));
+    _animation3 = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, 0.5),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: const Interval(
+        0.66,
+        1,
+        curve: Curves.easeInOut,
+      ),
+    ));
+    _listOfAnimations.addAll([_animation1, _animation2, _animation3]);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: widget.screenSize.height * 0.3,
+      child: Row(
+        children: [
+          for (int i = 0; i < _songInfoList.length; i++)
+            Expanded(
+              flex: 1,
+              child: SlideTransition(
+                position: _listOfAnimations[i],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Expanded(
+                    child: MiniPreviewMusicReproductor(
+                      screenSize: widget.screenSize,
+                      imageUrl: _songInfoList[i]['image'],
+                      title: _songInfoList[i]['title'] ?? 'Title',
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class MiniMultipleAnimatedPreviewsTwo extends StatefulWidget {
+  final Size screenSize;
+  const MiniMultipleAnimatedPreviewsTwo({
+    super.key,
+    required this.screenSize,
+  });
+
+  @override
+  State<MiniMultipleAnimatedPreviewsTwo> createState() =>
+      _MiniMultipleAnimatedPreviewTwoState();
+}
+
+class _MiniMultipleAnimatedPreviewTwoState
+    extends State<MiniMultipleAnimatedPreviewsTwo>
     with SingleTickerProviderStateMixin {
 //This will be a 3D carousel with 3 mini previews
 //From left to right
@@ -452,9 +589,13 @@ class _MiniMultipleAnimatedPreviewsState
 
 class MiniPreviewMusicReproductor extends StatelessWidget {
   final Size screenSize;
+  final String? imageUrl;
+  final String title;
   const MiniPreviewMusicReproductor({
     super.key,
     required this.screenSize,
+    this.imageUrl,
+    this.title = 'Otra noche en Miami',
   });
 
   @override
@@ -462,7 +603,7 @@ class MiniPreviewMusicReproductor extends StatelessWidget {
     final _width = screenSize.width * 0.2;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white70,
+        color: Colors.grey.shade300,
         borderRadius: BorderRadius.circular(15.0),
       ),
       //color: Colors.yellow,
@@ -470,15 +611,41 @@ class MiniPreviewMusicReproductor extends StatelessWidget {
       height: _width * 2.0,
       child: Column(
         children: [
-          const Expanded(
-            flex: 11,
-            child: Placeholder(),
+          Expanded(
+            flex: 10,
+            child: Container(
+              padding: const EdgeInsets.all(4.0),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Image.network(
+                  imageUrl ??
+                      'https://picsum.photos/200/200?random=${Random().nextInt(100)}',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           ),
           Expanded(
             flex: 8,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Otra noche en Miami"),
+                Expanded(
+                  child: AutoSizeText(
+                    minFontSize: 8,
+                    maxFontSize: 16,
+                    title,
+                    style: TextStyle(
+                      //fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 1,
+                  ),
+                ),
                 CustomSymphonearSlider(
                   onChanged: (value) {},
                 ),
@@ -583,7 +750,7 @@ class _CustomSymphonearSliderState extends State<CustomSymphonearSlider> {
     // double _currentSliderValue = widget.value?.toDouble() ?? 0.0;
 
     return SliderTheme(
-      data: SliderThemeData(
+      data: const SliderThemeData(
         overlayShape: RoundSliderOverlayShape(overlayRadius: 5),
       ),
       child: Slider(

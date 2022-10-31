@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:symphonear_flutter_web/pages/onboarding_page.dart';
 import 'package:symphonear_flutter_web/widgets/onboarding/onboard_connect_your_wallet_button.dart';
 import 'package:symphonear_flutter_web/widgets/onboarding/onboarding_heading.dart';
 

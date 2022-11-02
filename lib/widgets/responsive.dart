@@ -33,10 +33,10 @@ class Responsive extends StatelessWidget {
           const Material(
             child: Text('No Desktop or Tablet or Mobile Widget'),
           );
-    } else if (size.width >= 800) {
+    } else if (size.width >= 800 && size.width < 1200) {
       return tablet ??
-          mobile ??
           desktop ??
+          mobile ??
           const Material(
             child: Text('No Tablet or Mobile Widget'),
           );

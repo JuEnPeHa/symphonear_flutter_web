@@ -1,11 +1,7 @@
-import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:symphonear_flutter_web/pages/library_page.dart';
 import 'package:symphonear_flutter_web/utils/neumorphism.dart';
-import 'package:symphonear_flutter_web/widgets/onboarding/onboarding_heading.dart';
 import 'package:symphonear_flutter_web/widgets/onboarding/symphonear_onboard_text_with_connect_wallet.dart';
 import 'package:symphonear_flutter_web/widgets/responsive_widget.dart';
 import 'package:symphonear_flutter_web/widgets/symphonear_drawer.dart';
@@ -68,9 +64,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
       _scrollPosition = _scrollController.position.pixels;
     });
   }
-
-  // final List<bool> _isHovering =
-  //     List.generate(appBarButtons.length, (index) => false);
 
   @override
   void initState() {
@@ -151,7 +144,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         SymphonearOnboardTextWithConnectWallet(
                           screenSize: screenSize,
                         ),
-                        MiniMultipleAnimatedPreviews(screenSize: screenSize),
+                        MiniMultipleAnimatedPreviews(
+                          screenSize: screenSize,
+                        ),
                       ],
                     )
                   : Row(
@@ -165,7 +160,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         Expanded(
                           flex: 6,
                           child: MiniMultipleAnimatedPreviews(
-                              screenSize: screenSize),
+                            screenSize: screenSize,
+                          ),
                         ),
                       ],
                     ),
@@ -345,29 +341,35 @@ class _MiniMultipleAnimatedPreviewsState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.screenSize.height * 0.3,
-      child: Row(
-        children: [
-          for (int i = 0; i < _songInfoList.length; i++)
-            Expanded(
-              flex: 1,
-              child: SlideTransition(
-                position: _listOfAnimations[i],
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Expanded(
-                    child: MiniPreviewMusicReproductor(
-                      screenSize: widget.screenSize,
-                      imageUrl: _songInfoList[i]['image'],
-                      title: _songInfoList[i]['title'] ?? 'Title',
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          height: widget.screenSize.width * 0.35,
+          child: Row(
+            children: [
+              for (int i = 0; i < _songInfoList.length; i++)
+                Expanded(
+                  flex: 1,
+                  child: SlideTransition(
+                    position: _listOfAnimations[i],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: MiniPreviewMusicReproductor(
+                        screenSize: widget.screenSize,
+                        imageUrl: _songInfoList[i]['image'],
+                        title: _songInfoList[i]['title'] ?? 'Title',
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-        ],
-      ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: widget.screenSize.width * 0.35 / 2,
+        )
+      ],
     );
   }
 }
@@ -589,14 +591,14 @@ class _MiniMultipleAnimatedPreviewTwoState
 
 class MiniPreviewMusicReproductor extends StatelessWidget {
   final Size screenSize;
-  final String? imageUrl;
+  final String imageUrl;
   final String title;
-  const MiniPreviewMusicReproductor({
+  MiniPreviewMusicReproductor({
     super.key,
     required this.screenSize,
-    this.imageUrl,
+    String? imageUrl,
     this.title = 'Otra noche en Miami',
-  });
+  }) : imageUrl = imageUrl ?? 'https://picsum.photos/200/200?random=50';
 
   @override
   Widget build(BuildContext context) {
@@ -622,8 +624,7 @@ class MiniPreviewMusicReproductor extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Image.network(
-                  imageUrl ??
-                      'https://picsum.photos/200/200?random=${Random().nextInt(100)}',
+                  imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),

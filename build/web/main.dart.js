@@ -18703,8 +18703,10 @@ return t.e.a(s)},
 $S:44}
 A.a7_.prototype={
 $1(a){var s,r=a.loaded
+r=r==null?null:J.aF(r)
 r.toString
 s=a.total
+s=s==null?null:J.aF(s)
 s.toString
 this.a.$2(r,s)},
 $S:1}
@@ -21033,9 +21035,9 @@ k.toString
 s=this.B3(k)
 k=c.tiltX
 k.toString
-r=c.tiltY
+r=A.a9q(c)
 r.toString
-k=Math.abs(k)>Math.abs(r)?c.tiltX:c.tiltY
+k=Math.abs(k)>Math.abs(r)?A.a9p(c):A.a9q(c)
 k.toString
 r=c.timeStamp
 r.toString
@@ -21085,10 +21087,12 @@ A.a4a.prototype={
 $1(a){var s,r,q,p,o=this.a,n=o.rS(o.ju(a)),m=A.a([],t.u)
 for(s=J.aF(o.Ng(a));s.t();){r=s.gG(s)
 q=r.buttons
+q=q==null?null:J.aF(q)
 q.toString
 p=n.nh(q)
 if(p!=null)o.dA(m,p,r)
 q=r.buttons
+q=q==null?null:J.aF(q)
 q.toString
 o.dA(m,n.qJ(q),r)}o.c.$1(m)},
 $S:4}
@@ -21194,6 +21198,7 @@ r=A.a([],t.u)
 for(l=A.j3(a),l=new A.bf(l.a,A.l(l).i("bf<1,b>")),l=new A.d6(l,l.gq(l)),q=this.a,p=q.e,o=A.l(l).c;l.t();){n=l.d
 if(n==null)n=o.a(n)
 m=n.identifier
+m=m==null?null:J.aF(m)
 m.toString
 if(p.B(0,m)){m=n.identifier
 m.toString
@@ -22301,7 +22306,7 @@ A.k4.prototype={
 gq(a){return this.b},
 j(a,b){if(b>=this.b)throw A.e(A.bH(b,this,null,null,null))
 return this.a[b]},
-m(a,b,c){if(b>=this.b)throw A.e(A.bH(b,this,null,null,null))
+m(a,b,c){if(b>=this.b)throw A.e(A.bI(b,this,null,null,null))
 this.a[b]=c},
 sq(a,b){var s,r,q,p=this,o=p.b
 if(b<o)for(s=p.a,r=b;r<o;++r)s[r]=0
@@ -22914,7 +22919,7 @@ s.geS().c=s.e.c
 s.geS().d=s.e.c}},
 Yh(a){var s,r=self.window.KeyboardEvent
 r.toString
-if(a instanceof r)if(a.keyCode===13){r=this.y
+if(a instanceof r)if(J.aF(a.keyCode)===13){r=this.y
 r.toString
 s=this.d
 s===$&&A.c()
@@ -52570,48 +52575,48 @@ d=e.a.c
 if(d===B.p||d===B.K){if(i>k){d=e.d
 o=d.at
 o.toString
-d=d.z
-d.toString
-d=o>d}else d=!1
-if(d){h.b=Math.max(i-k,20)
-d=e.d
-o=d.z
+o=l>o}else o=!1
+if(o){g=Math.min(h-j,20)
+o=d.d
+l=o.z
+l.toString
+o=o.at
 o.toString
 d=d.at
 d.toString
 g=Math.max(o,d-h.aH())}else{if(j<l){d=e.d
 o=d.at
 o.toString
-d=d.Q
-d.toString
-d=o<d}else d=!1
-if(d){h.b=Math.max(l-j,20)
-d=e.d
-o=d.Q
+o=l<o}else o=!1
+if(o){g=Math.min(k-i,20)
+o=d.d
+l=o.Q
+l.toString
+o=o.at
 o.toString
 d=d.at
 d.toString
 g=Math.min(o,d+h.aH())}else g=null}}else{if(j<l){d=e.d
 o=d.at
 o.toString
-d=d.z
-d.toString
-d=o>d}else d=!1
-if(d){h.b=Math.max(l-j,20)
-d=e.d
-o=d.z
+o=l>o}else o=!1
+if(o){g=Math.min(k-i,20)
+o=d.d
+l=o.z
+l.toString
+o=o.at
 o.toString
 d=d.at
 d.toString
 g=Math.max(o,d-h.aH())}else{if(i>k){d=e.d
 o=d.at
 o.toString
-d=d.Q
-d.toString
-d=o<d}else d=!1
-if(d){h.b=Math.max(i-k,20)
-d=e.d
-o=d.Q
+o=l<o}else o=!1
+if(o){g=Math.min(h-j,20)
+o=d.d
+l=o.Q
+l.toString
+o=o.at
 o.toString
 d=d.at
 d.toString

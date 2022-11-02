@@ -9,11 +9,11 @@ class OnboardingConnectYourWalletButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       child: ResponsiveWidget.isSmallScreen(context)
           ? ElevatedButton(
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 15,
                   vertical: 15,
                 ),

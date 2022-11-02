@@ -69,8 +69,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
     });
   }
 
-  final List<bool> _isHovering =
-      List.generate(appBarButtons.length, (index) => false);
+  // final List<bool> _isHovering =
+  //     List.generate(appBarButtons.length, (index) => false);
 
   @override
   void initState() {

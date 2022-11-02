@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:symphonear_flutter_web/pages/onboarding_page.dart';
 
-class TopBarSymphonear extends StatefulWidget {
+class TopBarSymphonear extends StatelessWidget {
   final double opacity;
   const TopBarSymphonear({
     required this.opacity,
@@ -9,20 +9,12 @@ class TopBarSymphonear extends StatefulWidget {
   });
 
   @override
-  State<TopBarSymphonear> createState() => _TopBarSymphonearState();
-}
-
-class _TopBarSymphonearState extends State<TopBarSymphonear> {
-  final List<bool> _isHovering =
-      List.generate(appBarButtons.length, (index) => false);
-  bool _isProcesing = false;
-  @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     return PreferredSize(
       preferredSize: Size(screenSize.width, 1000),
       child: Container(
-        color: Colors.grey.shade300.withOpacity(widget.opacity),
+        color: Colors.grey.shade300.withOpacity(opacity),
         child: Padding(
             padding: const EdgeInsets.all(20),
             child: Row(
@@ -36,15 +28,8 @@ class _TopBarSymphonearState extends State<TopBarSymphonear> {
                       Icons.music_note_outlined,
                       size: 30,
                     ),
-                    // Text(
-                    //   'Symphonear',
-                    //   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    // ),
                   ),
                 ),
-                // SizedBox(
-                //   width: screenSize.width / 8,
-                // ),
                 Expanded(
                   flex: 4,
                   child: Row(
@@ -78,69 +63,7 @@ class _TopBarSymphonearState extends State<TopBarSymphonear> {
                 // ),
                 Expanded(
                   flex: 13,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: appBarButtons.map((AppBarButton appBarButton) {
-                      return InkWell(
-                        onHover: (value) {
-                          setState(() {
-                            _isHovering[appBarButtons.indexOf(appBarButton)] =
-                                value;
-                          });
-                        },
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => appBarButton.route,
-                            ),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                appBarButton.title,
-                                style: TextStyle(
-                                  color: _isHovering[
-                                          appBarButtons.indexOf(appBarButton)]
-                                      ? Colors.grey
-                                      : Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              // if (_isHovering[
-                              //     appBarButtons.indexOf(appBarButton)])
-                              //   Container(
-                              //     height: 2,
-                              //     width: 20,
-                              //     color: Colors.black,
-                              //   ),
-                              Visibility(
-                                maintainAnimation: true,
-                                maintainState: true,
-                                maintainSize: true,
-                                visible: _isHovering[
-                                    appBarButtons.indexOf(appBarButton)],
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  height: 2,
-                                  width: 20,
-                                  // color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                  child: TopBarSymphonearRightButtons(),
                 ),
               ],
             )),
@@ -201,6 +124,94 @@ class _TopBarSymphonearState extends State<TopBarSymphonear> {
       //       },
       //       icon: Icon(Icons.music_note, color: Colors.black)),
       // ),
+    );
+  }
+}
+
+class TopBarSymphonearRightButtons extends StatefulWidget {
+  final MainAxisAlignment mainAxisAlignment;
+  const TopBarSymphonearRightButtons({
+    super.key,
+    this.mainAxisAlignment = MainAxisAlignment.center,
+  });
+
+  @override
+  State<TopBarSymphonearRightButtons> createState() =>
+      _TopBarSymphonearRightButtonsState();
+}
+
+class _TopBarSymphonearRightButtonsState
+    extends State<TopBarSymphonearRightButtons> {
+  final List<bool> _isHovering =
+      List.generate(appBarButtons.length, (index) => false);
+
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: 'topBarRightButtons',
+      child: Material(
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: widget.mainAxisAlignment,
+          children: appBarButtons.map((AppBarButton appBarButton) {
+            return InkWell(
+              onHover: (value) {
+                setState(() {
+                  _isHovering[appBarButtons.indexOf(appBarButton)] = value;
+                });
+              },
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => appBarButton.route,
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      appBarButton.title,
+                      style: TextStyle(
+                        color: _isHovering[appBarButtons.indexOf(appBarButton)]
+                            ? Colors.grey
+                            : Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    // if (_isHovering[
+                    //     appBarButtons.indexOf(appBarButton)])
+                    //   Container(
+                    //     height: 2,
+                    //     width: 20,
+                    //     color: Colors.black,
+                    //   ),
+                    Visibility(
+                      maintainAnimation: true,
+                      maintainState: true,
+                      maintainSize: true,
+                      visible: _isHovering[appBarButtons.indexOf(appBarButton)],
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        height: 2,
+                        width: 20,
+                        // color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 }

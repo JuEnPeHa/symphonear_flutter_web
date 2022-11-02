@@ -3,7 +3,8 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
-  "assets/AssetManifest.json": "2efbb41d7877d10aac9d091f58ccd7b9",
+  "assets/AssetManifest.json": "bdd2535200060c98e6901ad4396541b7",
+"assets/assets/clave_de_sol.svg": "47c0da74d4d6983ffb34e7791bc5f77f",
 "assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
 "assets/fonts/MaterialIcons-Regular.otf": "e7069dfd19b331be16bed984668fe080",
 "assets/NOTICES": "c6d302b9aa879a16ef07e28df439a690",
@@ -19,9 +20,9 @@ const RESOURCES = {
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
-"index.html": "3d961c2dfc2b7e925a8d0771ce01fd86",
-"/": "3d961c2dfc2b7e925a8d0771ce01fd86",
-"main.dart.js": "bca761e2cdad53e6904cef49c314443e",
+"index.html": "0a6dda26df2000af3ec431e1a4112962",
+"/": "0a6dda26df2000af3ec431e1a4112962",
+"main.dart.js": "afcacb04024f31953ea061e300e69a5b",
 "manifest.json": "d13e20da456888b8078c4aeb045ef4c9",
 "version.json": "a775ead6a310771778b73702b3524593"
 };

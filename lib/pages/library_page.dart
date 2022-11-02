@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:symphonear_flutter_web/pages/onboarding_page.dart';
 import 'package:symphonear_flutter_web/widgets/responsive.dart';
 import 'package:symphonear_flutter_web/widgets/responsive_widget.dart';
+import 'package:symphonear_flutter_web/widgets/symphonear_drawer.dart';
 import 'package:symphonear_flutter_web/widgets/top_bar_symphonear.dart';
 
 //This is My Library Page
@@ -268,6 +270,36 @@ class LeftNavBar extends StatelessWidget {
     return Container(
       height: double.maxFinite,
       color: Colors.grey[300],
+      child: Padding(
+        padding: EdgeInsets.only(top: size.height * 0.1),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            InkWell(
+              onTap: () {},
+              child: SymphonearClaveDeSolWidget(
+                height: 30,
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Expanded(
+              flex: 5,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: drawerLibraryButtons,
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: ContadorSaldoRestanteWidgetSymphonear(
+                isColumn: true,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

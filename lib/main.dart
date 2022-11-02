@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:symphonear_flutter_web/pages/library_page.dart';
 import 'package:symphonear_flutter_web/pages/onboarding_page.dart';
 import 'package:symphonear_flutter_web/widgets/responsive.dart';
 
@@ -39,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return const Responsive(
-      mobile: OnboardingPage(),
+      mobile: MyLibraryPage(), //OnboardingPage(),
     );
   }
 }

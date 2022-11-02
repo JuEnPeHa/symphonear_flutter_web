@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:symphonear_flutter_web/pages/onboarding_page.dart';
+import 'package:symphonear_flutter_web/widgets/symphonear_drawer.dart';
 
 class TopBarSymphonear extends StatelessWidget {
   final double opacity;
@@ -24,28 +25,12 @@ class TopBarSymphonear extends StatelessWidget {
                   flex: 2,
                   child: InkWell(
                     onTap: () {},
-                    child: Icon(
-                      Icons.music_note_outlined,
-                      size: 30,
-                    ),
+                    child: SymphonearClaveDeSolWidget(height: 30),
                   ),
                 ),
                 Expanded(
                   flex: 4,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.av_timer, color: Colors.black),
-                      SizedBox(width: 2),
-                      Text('0D 0H 00:00',
-                          style: TextStyle(color: Colors.black)),
-                      SizedBox(width: 8),
-                      Icon(Icons.monetization_on, color: Colors.black),
-                      SizedBox(width: 2),
-                      Text('0 USDC', style: TextStyle(color: Colors.black)),
-                    ],
-                  ),
+                  child: ContadorSaldoRestanteWidgetSymphonear(),
                 ),
                 // Row(
                 //   children: appBarButtons

@@ -8,6 +8,29 @@ import 'package:symphonear_flutter_web/widgets/symphonear_drawer.dart';
 import 'package:symphonear_flutter_web/widgets/top_bar_symphonear.dart';
 import 'package:symphonear_flutter_web/widgets/web_scrollbar.dart';
 
+final List<DrawerLibraryButton> drawerLibraryButtons = [
+  DrawerLibraryButton(
+    title: 'Home',
+    icon: Icons.house,
+    route: Container(),
+  ),
+  DrawerLibraryButton(
+    title: 'Search',
+    icon: Icons.search,
+    route: Container(),
+  ),
+  DrawerLibraryButton(
+    title: 'Albums',
+    icon: Icons.view_carousel,
+    route: Container(),
+  ),
+  DrawerLibraryButton(
+    title: 'Alice.near',
+    icon: Icons.person,
+    route: Container(),
+  ),
+];
+
 final List<AppBarButton> appBarButtons = [
   AppBarButton(
     title: 'How To',
@@ -232,6 +255,50 @@ class AppBarButton {
     required this.title,
     required this.route,
   });
+}
+
+class DrawerLibraryButton extends StatelessWidget {
+  const DrawerLibraryButton({
+    Key? key,
+    required this.title,
+    required this.icon,
+    required this.route,
+    this.padding =
+        const EdgeInsets.only(left: 48, right: 48, top: 4, bottom: 4),
+  }) : super(key: key);
+
+  final String title;
+  final IconData icon;
+  final Widget route;
+  final EdgeInsets padding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // padding: padding,
+      margin: padding,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.grey.shade400.withOpacity(0.75),
+      ),
+      child: ListTile(
+        // hoverColor: Colors.grey,
+        // focusColor: Colors.grey,
+        splashColor: Colors.grey,
+        mouseCursor: SystemMouseCursors.click,
+        leading: Icon(icon),
+        title: Text(title),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => route,
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
 
 /*This widget will be a container with 3 MiniPreviewMusicReproductor

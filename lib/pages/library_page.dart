@@ -306,7 +306,7 @@ class LeftNavBar extends StatelessWidget {
 
 class BottomMusicPlayer extends StatelessWidget {
   final double height;
-  const BottomMusicPlayer({super.key, this.height = 100});
+  const BottomMusicPlayer({super.key, this.height = 75});
 
   @override
   Widget build(BuildContext context) {
@@ -317,10 +317,38 @@ class BottomMusicPlayer extends StatelessWidget {
           begin: Alignment.bottomRight,
           end: Alignment.topLeft,
           colors: [
-            Colors.grey[300]!,
+            Colors.grey[500]!,
             Colors.grey[100]!,
           ],
         ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: double.maxFinite,
+              width: double.maxFinite,
+              color: Colors.red,
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Container(
+              height: double.maxFinite,
+              width: double.maxFinite,
+              color: Colors.blue,
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: double.maxFinite,
+              width: double.maxFinite,
+              color: Colors.green,
+            ),
+          ),
+        ],
       ),
     );
   }
